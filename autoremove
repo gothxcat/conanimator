@@ -1,0 +1,17 @@
+#!/bin/bash
+
+gitignore=$(cat .gitignore | grep -v "#")
+root_objects=$(echo "$gitignore" | grep "^/" | cut -c 2-)
+any_objects=$(echo "$gitignore" | grep "^[^/]")
+
+if [[ -n "$root_objects" ]]; then rm -rf $root_objects; fi
+
+for search in $any_objects; do
+	if [[ "$search" == *"/"* ]]; then
+		objects=$(find . -wholename "$search")
+	else
+		objects=$(find . -name "$search")
+	fi
+	
+	if [[ -n "$objects" ]]; then rm -rf $objects; fi
+done
