@@ -2,7 +2,7 @@
 
 *Codename "Keith"*
 
-Template for a terminal-based 2D text animator built on C++
+A terminal-based 2D text animator built on C++
 
 
 ## Build Dependencies
