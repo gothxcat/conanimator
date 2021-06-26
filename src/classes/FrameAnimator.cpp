@@ -3,19 +3,16 @@
 */
 
 #include <stdlib.h>
-#include <unistd.h>
 #include <ncurses.h>
 #include <math.h>
 #include <vector>
 #include <thread>
-#include <chrono>
+#include <future>
+#include "../include/clock.hpp"
 #include "../include/animator.hpp"
 #include "../include/maths.hpp"
 
-typedef std::chrono::high_resolution_clock hres_clock;
-typedef std::chrono::duration<double> duration_d;
-
-void animate_frames(std::vector<const char *> frames, useconds_t interval, bool *completed) {
+void animate_frames(std::vector<const char *> frames, useconds_t interval, std::timed_mutex *mtx, bool *completed) {
     const char *current_frame;
     
     Point max_xy = { getmaxx(stdscr), getmaxy(stdscr) };
@@ -31,25 +28,27 @@ void animate_frames(std::vector<const char *> frames, useconds_t interval, bool 
 
     while (!*completed) {
         for (int i=0; i<frame_count; i++) {
-            previous_time = hres_clock::now();
+            if (!*completed) {
+                previous_time = hres_clock::now();
 
-            current_frame = frames[i];
-            mvaddstr(0, 0, current_frame);
-            refresh();
+                current_frame = frames[i];
+                mvaddstr(0, 0, current_frame);
+                refresh();
 
-            time = hres_clock::now();
-            time_span = std::chrono::duration_cast<duration_d>(time - previous_time);
-            frametime = time_span.count();
+                mtx->try_lock_for(std::chrono::microseconds(interval));
 
-            asprintf(&msg_frametime, "Frame %02d/%02d took %fs",
-                i, frame_count, frametime);
-            mvaddstr(last_xy.y, 0, msg_frametime);
+                time = hres_clock::now();
+                time_span = std::chrono::duration_cast<duration_d>(time - previous_time);
+                frametime = time_span.count();
 
-            framerate = floor(1/frametime);
-            asprintf(&msg_framerate, "%d fps", framerate);
-            mvaddstr(last_xy.y, last_xy.x - strlen(msg_framerate), msg_framerate);
-            
-            usleep(interval);
+                asprintf(&msg_frametime, "Frame %02d/%02d took %fs",
+                    i, frame_count, frametime);
+                mvaddstr(last_xy.y, 0, msg_frametime);
+
+                framerate = floor(1/frametime);
+                asprintf(&msg_framerate, "%d fps", framerate);
+                mvaddstr(last_xy.y, last_xy.x - strlen(msg_framerate), msg_framerate);
+            }
         }
     }
 
@@ -72,7 +71,7 @@ class FrameAnimator: public Animator {
     
     public:
         void start(bool *return_signal) {
-            this->animator = std::thread(animate_frames, this->frames, this->interval, return_signal);
+            this->animator = std::thread(animate_frames, this->frames, this->interval, &this->mtx, return_signal);
         }
 
         FrameAnimator(std::vector<const char *> frames, useconds_t interval) {
