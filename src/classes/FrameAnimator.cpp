@@ -8,6 +8,7 @@
 #include <vector>
 #include <thread>
 #include <future>
+#include <string>
 #include "../include/clock.hpp"
 #include "../include/animator.hpp"
 #include "../include/maths.hpp"
@@ -19,12 +20,16 @@ void animate_frames(std::vector<const char *> frames, useconds_t interval, std::
     Point last_xy = { max_xy.x-1, max_xy.y-1 };
     size_t frame_count = frames.size();
     size_t frame_size = max_xy.x * max_xy.y;
+    float target_frametime = 1.0/60.0;
 
     hres_clock::time_point time, previous_time;
     duration_d time_span;
     double frametime;
     int framerate;
-    char *msg_frametime, *msg_framerate;
+    int msg_x_space;
+    useconds_t diff, delay;
+    char *msg_frametime, *msg_framerate, *msg;
+    std::string str_spacer;
 
     while (!*completed) {
         for (int i=0; i<frame_count; i++) {
@@ -35,25 +40,37 @@ void animate_frames(std::vector<const char *> frames, useconds_t interval, std::
                 mvaddstr(0, 0, current_frame);
                 refresh();
 
-                mtx->try_lock_for(std::chrono::microseconds(interval));
+                time = hres_clock::now();
+                time_span = std::chrono::duration_cast<std::chrono::seconds>(time - previous_time);
+                frametime = time_span.count();
+
+                diff = floor(S_TO_USECONDS(target_frametime - frametime));
+                delay = diff > 0 ? diff : 0;
+                if (delay > 0) mtx->try_lock_for(std::chrono::microseconds(delay));
 
                 time = hres_clock::now();
                 time_span = std::chrono::duration_cast<duration_d>(time - previous_time);
+                
                 frametime = time_span.count();
-
                 asprintf(&msg_frametime, "Frame %02d/%02d took %fs",
                     i, frame_count, frametime);
-                mvaddstr(last_xy.y, 0, msg_frametime);
 
-                framerate = floor(1/frametime);
+                framerate = round(1.0/frametime);
                 asprintf(&msg_framerate, "%d fps", framerate);
-                mvaddstr(last_xy.y, last_xy.x - strlen(msg_framerate), msg_framerate);
+
+                msg_x_space = max_xy.x - (strlen(msg_frametime) + strlen(msg_framerate));
+                str_spacer = std::string(msg_x_space, ' ');
+                const char *msg_spacer = str_spacer.c_str();
+
+                asprintf(&msg, "%s%s%s", msg_frametime, msg_spacer, msg_framerate);
+                mvaddstr(last_xy.y, 0, msg);
             }
         }
     }
 
     free(msg_frametime);
     free(msg_framerate);
+    free(msg);
 }
 
 class FrameAnimator: public Animator {

@@ -10,7 +10,7 @@
 
 int main(int argc, char **argv) {
 	// const char *msg = "Hello, world!";
-	useconds_t interval = USECONDS(25);
+	useconds_t interval = MS_TO_USECONDS(25);
 
 	// StringAnimator animator = StringAnimator(msg, interval);
 	FrameAnimator animator = FrameAnimator(ANIM_TEST, interval);

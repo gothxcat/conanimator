@@ -47,7 +47,7 @@ A terminal-based 2D text animator built on C++
     - ~~Basic input handling~~ &#10003;
 - ~~Dynamic string reveal animations~~ &#10003;
 - ~~Multi-frame text animations displayed in sequence~~ &#10003;
-- Universal framerate &#9744;
+- ~~Universal framerate~~ &#10003;
 - Reading and displaying text images from files &#9744;
 - Color text support &#9744;
 - Optimisation &#9744;
