@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <ncurses.h>
 #include <math.h>
+#include <string.h>
 #include <vector>
 #include <thread>
 #include <future>
@@ -41,7 +42,7 @@ class FrameAnimator: public Animator {
             return asprintf(msg, "%s%s%s", *msg_frametime, msg_spacer, *msg_framerate);
         }
 
-        static void animate_frames(std::vector<const char *> frames, float target_framerate, std::timed_mutex *mtx, bool *completed) {
+        static void animate_frames(std::vector<const char*> frames, float target_framerate, std::timed_mutex *mtx, bool *completed) {
             const char *current_frame;
             
             Point max_xy = {
@@ -105,7 +106,7 @@ class FrameAnimator: public Animator {
             this->animator = std::thread(animate_frames, this->frames, this->target_framerate, &this->mtx, return_signal);
         }
 
-        FrameAnimator(std::vector<const char *> frames, float target_framerate) {
+        FrameAnimator(std::vector<const char*> frames, float target_framerate) {
             this->setup(frames, target_framerate);
         }
 
