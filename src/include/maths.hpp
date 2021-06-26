@@ -1,5 +1,5 @@
 /*
-*   maths.hpp
+*   Maths and conversion defs
 */
 
 #ifndef __MATHS
