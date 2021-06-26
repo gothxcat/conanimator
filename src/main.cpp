@@ -1,37 +1,18 @@
 /*
-*	main.cpp
+*	Program entrypoint
 */
 
 #include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <ncurses.h>
-#include <thread>
-
-#include "scr.hpp"
-#include "maths.hpp"
-#include "animator.hpp"
+#include "include/maths.hpp"
+#include "include/animators.hpp"
+#include "include/proc.hpp"
 
 int main(int argc, char **argv) {
-	scr_setup();
-
-	useconds_t interval = USECONDS(50);
 	const char *msg = "Hello, world!";
-	size_t len = strlen(msg);
-	
-	char key;
-	char current_ch;
-	bool done = false;
-	std::thread animator(animate, msg, len, current_ch, interval, &done);
+	useconds_t interval = USECONDS(25);
 
-	while (key != 'q' && key != 'Q') {
-		key = getch();
-	}
-
-	done = true;
-	animator.join();
-	scr_end();
+	StringAnimator animator = StringAnimator(msg, interval);
+	start(&animator);
 	
 	return 0;
 }

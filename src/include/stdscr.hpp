@@ -1,5 +1,5 @@
 /*
-*	scr.hpp
+*	ncurses screen definitions
 */
 
 #ifndef __SCR
@@ -8,12 +8,13 @@
 #include <stdlib.h>
 #include <ncurses.h>
 
-void scr_setup() {
+WINDOW *scr_setup() {
     initscr();
 	cbreak();
 	noecho();
 	intrflush(stdscr, true);
 	keypad(stdscr, true);
+	return stdscr;
 }
 
 #define scr_end()           endwin()
