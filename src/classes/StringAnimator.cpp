@@ -12,21 +12,6 @@
 #include "../include/str.hpp"
 #include "../include/animator.hpp"
 
-void animate_string(PortableString p_str, useconds_t interval, std::timed_mutex *mtx, bool *completed) {
-    char current_ch;
-    while (!*completed) {
-        clear();
-        for (int i=0; i<p_str.len; i++) {
-            if (!*completed) {
-                current_ch = p_str.str[i];
-                addch(current_ch);
-                refresh();
-                mtx->try_lock_for(std::chrono::microseconds(interval));
-            }
-        }
-    }
-}
-
 class StringAnimator: public Animator {
     private:
         PortableString p_str;
@@ -39,7 +24,21 @@ class StringAnimator: public Animator {
 
             return ret;
         }
-    
+
+        static void animate_string(PortableString p_str, useconds_t interval, std::timed_mutex *mtx, bool *completed) {
+            char current_ch;
+            while (!*completed) {
+                clear();
+                for (int i=0; i<p_str.len; i++) {
+                    if (!*completed) {
+                        current_ch = p_str.str[i];
+                        addch(current_ch);
+                        refresh();
+                        mtx->try_lock_for(std::chrono::microseconds(interval));
+                    }
+                }
+            }
+        }
     public:
         void start(bool *return_signal) {
             this->animator = std::thread(animate_string, this->p_str, this->interval, &this->mtx, return_signal);
