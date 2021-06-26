@@ -4,3 +4,5 @@ configure       linguist-vendored
 install-sh      linguist-vendored
 missing         linguist-vendored
 depcomp         linguist-vendored
+LICENSE         linguist-vendored
+EPILOGUE        linguist-vendored
