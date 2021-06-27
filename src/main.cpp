@@ -3,18 +3,18 @@
 */
 
 #include <stdlib.h>
-#include "include/maths.hpp"
-#include "include/animators.hpp"
-#include "include/proc.hpp"
-#include "include/frames.hpp"
+#include <argparse.hpp>
+#include "include/console.hpp"
 
 int main(int argc, char **argv) {
-	// const char *msg = "Hello, world!";
-	// useconds_t interval = MS_TO_USECONDS(25);
-	// StringAnimator animator = StringAnimator(msg, interval);
+	argparse::ArgumentParser program = setup(
+		"conanimator", "1.0.0", "A terminal-based 2D text/ASCII animator.");
 
-	FrameAnimator animator = FrameAnimator(ANIM_TEST, 60);
-	start(&animator);
-	
-	return 0;
+	int ret = EXIT_SUCCESS;
+	ret = parse(&program, argc, argv);
+	if (ret == EXIT_SUCCESS) {
+		ret = process(&program);
+	}
+
+	return ret;
 }

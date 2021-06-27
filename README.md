@@ -4,6 +4,8 @@
 
 A terminal-based 2D text animator built on C++
 
+## Project Initialisation
+`git submodule init && git submodule update`
 
 ## Build
 ### Dependencies
@@ -15,9 +17,10 @@ A terminal-based 2D text animator built on C++
 
 
 ## Running
-
-`./conanimator`
-
+- `./conanimator -h`
+    - Display usage
+- `./conanimator -r frames`
+    - Run the example animation
 
 ## Debug
 ### Dependencies
