@@ -17,6 +17,8 @@ AC_PROG_CXX
 
 # Checks for library functions.
 
+# Outputs
+
 AC_CONFIG_FILES([
 	Makefile
 ])

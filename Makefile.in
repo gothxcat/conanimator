@@ -269,7 +269,7 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 codesrc = ./src
-conanimator_SOURCES = $(codesrc)/main.cpp
+conanimator_SOURCES = $(codesrc)/main.cpp $(codesrc)/* $(libdir)/*
 AM_CXXFLAGS = -lncurses -pthread \
 -I$(codesrc)/include \
 -I$(libdir)/argparse/include -I$(libdir)/cjson
