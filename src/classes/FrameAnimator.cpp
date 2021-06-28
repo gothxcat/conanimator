@@ -13,12 +13,24 @@
 #include "../include/animator.hpp"
 #include "../include/maths.hpp"
 
+struct FrameDebug {
+    char **msg;
+    char **msg_frametime;
+    char **msg_framerate;
+    std::string *spacer;
+    int current_frame;
+    int frame_count;
+    double frametime;
+    int framerate;
+    Point max_xy;
+};
+
 class FrameAnimator: public Animator {
     private:
         std::vector<const char*> frames;
-        float target_framerate;
+        unsigned int target_framerate;
         
-        WINDOW *setup(std::vector<const char *> frames, float target_framerate) {
+        WINDOW *setup(std::vector<const char *> frames, unsigned int target_framerate) {
             WINDOW *ret = scr_setup();
             this->frames = frames;
             this->target_framerate = target_framerate;
@@ -26,22 +38,23 @@ class FrameAnimator: public Animator {
             return ret;
         }
     
-        static int asprintf_debug(char **msg, char **msg_frametime, char **msg_framerate, std::string spacer,
-            int current_frame, int frame_count, double frametime, int framerate, Point max_xy) {
-            asprintf(msg_frametime, "Frame %02d/%02d took %fs",
-                current_frame, frame_count, frametime);
+        static int asprintf_debug(FrameDebug info) {
+            asprintf(info.msg_frametime, "Frame %02d/%02d took %fs",
+                info.current_frame, info.frame_count, info.frametime);
 
-            framerate = FRAMERATE(frametime);
-            asprintf(msg_framerate, "%d fps", framerate);
+            info.framerate = FRAMERATE(info.frametime);
+            asprintf(info.msg_framerate, "%d fps", info.framerate);
 
-            int space = max_xy.x - (strlen(*msg_frametime) + strlen(*msg_framerate));
-            spacer = std::string(space, ' ');
-            const char *msg_spacer = spacer.c_str();
+            int space = info.max_xy.x - (strlen(*info.msg_frametime) + strlen(*info.msg_framerate));
+            info.spacer->assign(space, ' ');
+            const char *msg_spacer = info.spacer->c_str();
 
-            return asprintf(msg, "%s%s%s", *msg_frametime, msg_spacer, *msg_framerate);
+            return asprintf(info.msg, "%s%s%s",
+                *info.msg_frametime, msg_spacer, *info.msg_framerate);
         }
 
-        static void animate_frames(std::vector<const char*> frames, float target_framerate, std::timed_mutex *mtx, bool *completed) {
+        static void animate_frames(std::vector<const char*> frames, unsigned int target_framerate,
+                std::timed_mutex *mtx, bool *completed) {
             const char *current_frame;
             
             Point max_xy = {
@@ -54,8 +67,10 @@ class FrameAnimator: public Animator {
                 max_xy.y-1
             };
 
-            size_t frame_count = frames.size();
-            float target_frametime = 1.0 / target_framerate;
+            int frame_count = frames.size();
+            
+            float target_frametime = 1.0 / (target_framerate > 0 ? target_framerate
+                : DEFAULT_FPS);
 
             hres_clock::time_point time;
             hres_clock::time_point previous_time;
@@ -89,8 +104,8 @@ class FrameAnimator: public Animator {
                         time_span = std::chrono::duration_cast<duration_d>(time - previous_time);
                         frametime = time_span.count();
                         
-                        asprintf_debug(&msg, &msg_frametime, &msg_framerate, str_spacer,
-                            i, frame_count, frametime, framerate, max_xy);
+                        asprintf_debug({&msg, &msg_frametime, &msg_framerate, &str_spacer,
+                            i, frame_count, frametime, framerate, max_xy});
                         mvaddstr(last_xy.y, 0, msg);
                     }
                 }
@@ -102,10 +117,11 @@ class FrameAnimator: public Animator {
         }
     public:
         void start(bool *return_signal) {
-            this->animator = std::thread(animate_frames, this->frames, this->target_framerate, &this->mtx, return_signal);
+            this->animator = std::thread(animate_frames,
+                this->frames, this->target_framerate, &this->mtx, return_signal);
         }
 
-        FrameAnimator(std::vector<const char*> frames, float target_framerate) {
+        FrameAnimator(std::vector<const char*> frames, unsigned int target_framerate) {
             this->setup(frames, target_framerate);
         }
 

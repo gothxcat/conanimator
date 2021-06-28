@@ -9,6 +9,8 @@
 #include <ncurses.h>
 #include <thread>
 
+#define DEFAULT_FPS 60
+
 class Animator;
 
 #include "../classes/Animator.cpp"

@@ -16,7 +16,7 @@ function_map tests = {
 };
 
 void test_frames() {
-    FrameAnimator animator = FrameAnimator(ANIM_TEST, 60);
+    FrameAnimator animator = FrameAnimator(ANIM_TEST, DEFAULT_FPS);
 	start(&animator);
 }
 
