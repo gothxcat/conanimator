@@ -9,7 +9,7 @@ A terminal-based 2D text animator built on C++
 
 ## Build
 ### Dependencies
-- GNU toolchain (>=C++11)
+- GNU toolchain (>=C++17)
 - ncurses
 
 ### Building
