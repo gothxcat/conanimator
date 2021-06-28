@@ -6,4 +6,4 @@ conanimator_SOURCES = $(codesrc)/main.cpp
 
 AM_CXXFLAGS = -lncurses -pthread \
 -I$(codesrc)/include \
--I$(libdir)/argparse -I$(libdir)/json
+-I$(libdir)/argparse/include -I$(libdir)/cjson
