@@ -5,7 +5,7 @@
 #ifndef __PROC
 #define __PROC
 
-#include "animator.hpp"
+#include <animator.hpp>
 
 void start(Animator *animator);
 

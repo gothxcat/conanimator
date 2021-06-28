@@ -3,7 +3,8 @@
 */
 
 #include <stdlib.h>
-#include "../include/animators.hpp"
+
+#include <animators.hpp>
 
 void start(Animator *animator) {
     bool done = false;

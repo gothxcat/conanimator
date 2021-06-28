@@ -3,8 +3,9 @@
 */
 
 #include <stdlib.h>
-#include <argparse.hpp>
-#include "include/console.hpp"
+#include <argparse/argparse.hpp>
+
+#include <console.hpp>
 
 int main(int argc, char **argv) {
 	argparse::ArgumentParser program = setup(

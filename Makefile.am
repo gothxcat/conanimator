@@ -1,7 +1,9 @@
-bin_PROGRAMS = conanimator
-conanimator_SOURCES = src/main.cpp
+codesrc = ./src
 libdir = ./lib
 
+bin_PROGRAMS = conanimator
+conanimator_SOURCES = $(codesrc)/main.cpp
+
 AM_CXXFLAGS = -lncurses -pthread \
--I$(srcdir)/include/*.h -I$(srcdir)/include/*.hpp \
--I$(libdir)/argparse/include/argparse
+-I$(codesrc)/include \
+-I$(libdir)/argparse -I$(libdir)/json

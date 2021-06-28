@@ -7,10 +7,11 @@
 #include <unistd.h>
 #include <thread>
 #include <future>
-#include "../include/clock.hpp"
-#include "../include/stdscr.hpp"
-#include "../include/str.hpp"
-#include "../include/animator.hpp"
+
+#include <clock.hpp>
+#include <stdscr.hpp>
+#include <str.hpp>
+#include <animator.hpp>
 
 class StringAnimator: public Animator {
     private:

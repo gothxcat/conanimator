@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8">
+<animation>
+    <fps>60</fps>
+    <frames>
+        <frame>
+            <!-- Frame 1 -->
+        </frame>
+        <frame>
+            <!-- Frame 2 -->
+        </frame>
+        <!-- ... -->
+    </frames>
+</animation>

@@ -6,7 +6,8 @@
 #include <ncurses.h>
 #include <thread>
 #include <future>
-#include "../include/stdscr.hpp"
+
+#include <stdscr.hpp>
 
 class Animator {
     protected:

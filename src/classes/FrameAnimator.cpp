@@ -9,9 +9,11 @@
 #include <thread>
 #include <future>
 #include <string>
-#include "../include/clock.hpp"
-#include "../include/animator.hpp"
-#include "../include/maths.hpp"
+
+#include <clock.hpp>
+#include <animator.hpp>
+#include <maths.hpp>
+#include <animations.hpp>
 
 struct FrameDebug {
     char **msg;
@@ -121,8 +123,8 @@ class FrameAnimator: public Animator {
                 this->frames, this->target_framerate, &this->mtx, return_signal);
         }
 
-        FrameAnimator(std::vector<const char*> frames, unsigned int target_framerate) {
-            this->setup(frames, target_framerate);
+        FrameAnimator(Animation animation) {
+            this->setup(animation.frames, animation.framerate);
         }
 
         FrameAnimator();

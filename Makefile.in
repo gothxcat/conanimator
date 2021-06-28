@@ -102,7 +102,7 @@ CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am__dirstamp = $(am__leading_dot)dirstamp
-am_conanimator_OBJECTS = src/main.$(OBJEXT)
+am_conanimator_OBJECTS = $(codesrc)/main.$(OBJEXT)
 conanimator_OBJECTS = $(am_conanimator_OBJECTS)
 conanimator_LDADD = $(LDADD)
 AM_V_P = $(am__v_P_@AM_V@)
@@ -120,7 +120,7 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = src/$(DEPDIR)/main.Po
+am__depfiles_remade = $(codesrc)/$(DEPDIR)/main.Po
 am__mv = mv -f
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -268,10 +268,11 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-conanimator_SOURCES = src/main.cpp
+codesrc = ./src
+conanimator_SOURCES = $(codesrc)/main.cpp
 AM_CXXFLAGS = -lncurses -pthread \
--I$(srcdir)/include/*.h -I$(srcdir)/include/*.hpp \
--I$(libdir)/argparse/include/argparse
+-I$(codesrc)/include \
+-I$(libdir)/argparse -I$(libdir)/json
 
 all: all-am
 
@@ -352,13 +353,14 @@ uninstall-binPROGRAMS:
 
 clean-binPROGRAMS:
 	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
-src/$(am__dirstamp):
-	@$(MKDIR_P) src
-	@: > src/$(am__dirstamp)
-src/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) src/$(DEPDIR)
-	@: > src/$(DEPDIR)/$(am__dirstamp)
-src/main.$(OBJEXT): src/$(am__dirstamp) src/$(DEPDIR)/$(am__dirstamp)
+$(codesrc)/$(am__dirstamp):
+	@$(MKDIR_P) $(codesrc)
+	@: > $(codesrc)/$(am__dirstamp)
+$(codesrc)/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) $(codesrc)/$(DEPDIR)
+	@: > $(codesrc)/$(DEPDIR)/$(am__dirstamp)
+$(codesrc)/main.$(OBJEXT): $(codesrc)/$(am__dirstamp) \
+	$(codesrc)/$(DEPDIR)/$(am__dirstamp)
 
 conanimator$(EXEEXT): $(conanimator_OBJECTS) $(conanimator_DEPENDENCIES) $(EXTRA_conanimator_DEPENDENCIES) 
 	@rm -f conanimator$(EXEEXT)
@@ -366,12 +368,12 @@ conanimator$(EXEEXT): $(conanimator_OBJECTS) $(conanimator_DEPENDENCIES) $(EXTRA
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
-	-rm -f src/*.$(OBJEXT)
+	-rm -f $(codesrc)/*.$(OBJEXT)
 
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/main.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(codesrc)/$(DEPDIR)/main.Po@am__quote@ # am--include-marker
 
 $(am__depfiles_remade):
 	@$(MKDIR_P) $(@D)
@@ -659,8 +661,8 @@ clean-generic:
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
 	-test . = "$(srcdir)" || test -z "$(CONFIG_CLEAN_VPATH_FILES)" || rm -f $(CONFIG_CLEAN_VPATH_FILES)
-	-rm -f src/$(DEPDIR)/$(am__dirstamp)
-	-rm -f src/$(am__dirstamp)
+	-test -z "$(codesrc)/$(DEPDIR)/$(am__dirstamp)" || rm -f $(codesrc)/$(DEPDIR)/$(am__dirstamp)
+	-test -z "$(codesrc)/$(am__dirstamp)" || rm -f $(codesrc)/$(am__dirstamp)
 
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
@@ -671,7 +673,7 @@ clean-am: clean-binPROGRAMS clean-generic mostlyclean-am
 
 distclean: distclean-am
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
-		-rm -f src/$(DEPDIR)/main.Po
+		-rm -f $(codesrc)/$(DEPDIR)/main.Po
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-tags
@@ -719,7 +721,7 @@ installcheck-am:
 maintainer-clean: maintainer-clean-am
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
 	-rm -rf $(top_srcdir)/autom4te.cache
-		-rm -f src/$(DEPDIR)/main.Po
+		-rm -f $(codesrc)/$(DEPDIR)/main.Po
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 

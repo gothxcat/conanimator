@@ -6,7 +6,8 @@
 #define __ANIMATORS
 
 #include <stdlib.h>
-#include "animator.hpp"
+
+#include <animator.hpp>
 
 class StringAnimator;
 class FrameAnimator;

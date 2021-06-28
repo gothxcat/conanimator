@@ -3,11 +3,12 @@
 */
 
 #include <stdlib.h>
-#include <argparse.hpp>
 #include <string>
 #include <iostream>
 #include <sstream>
-#include "../include/tests.hpp"
+#include <argparse/argparse.hpp>
+
+#include <tests.hpp>
 
 std::string help_run = gen_help_run();
 

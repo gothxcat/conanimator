@@ -4,11 +4,12 @@
 
 #include <stdlib.h>
 #include <map>
-#include "../include/tests.hpp"
-#include "../include/maths.hpp"
-#include "../include/animators.hpp"
-#include "../include/proc.hpp"
-#include "../include/frames.hpp"
+
+#include <tests.hpp>
+#include <maths.hpp>
+#include <animations.hpp>
+#include <proc.hpp>
+#include <animations.hpp>
 
 function_map tests = {
     { "frames", (func*)&test_frames },
@@ -16,7 +17,7 @@ function_map tests = {
 };
 
 void test_frames() {
-    FrameAnimator animator = FrameAnimator(ANIM_TEST, DEFAULT_FPS);
+    FrameAnimator animator = FrameAnimator(ANIM_TEST);
 	start(&animator);
 }
 
