@@ -10,6 +10,7 @@
 #include <animations.hpp>
 #include <proc.hpp>
 #include <animations.hpp>
+#include <fs.hpp>
 
 function_map tests = {
     { "frames", (func*)&test_frames },

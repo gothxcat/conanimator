@@ -9,6 +9,7 @@
 #include <argparse/argparse.hpp>
 
 #include <tests.hpp>
+#include <loader.hpp>
 
 std::string help_run = gen_help_run();
 
@@ -18,6 +19,10 @@ argparse::ArgumentParser setup(std::string name, std::string version, std::strin
 
     program.add_argument("-r", "--run")
 		.help("run a built-in animation \u2014 use `-r help` to display options")
+        .nargs(1);
+
+    program.add_argument("-f", "--file")
+		.help("run an animation from a JSON file (see example.json)")
         .nargs(1);
     
     return program;
@@ -49,6 +54,12 @@ int process(argparse::ArgumentParser *program) {
             std::cout << help_run;
 			ret = EXIT_FAILURE;
 		}
+    } else if (program->is_used("-f")) {
+        const int success = run_anim(program->get("-f").c_str());
+        if (success != EXIT_SUCCESS) {
+            std::cout << "File not readable" << std::endl;
+            ret = EXIT_FAILURE;
+        }
     } else {
         std::cout << *program;
     }
