@@ -43,7 +43,7 @@ A terminal-based 2D text animator built on C++
     - `make dist`
 
 
-### Initial Feature Roadmap
+### Feature Roadmap
 
 - ~~Functional GNU build structure and Hello World~~ &#10003;
 - ~~Object-oriented ncurses display initialisation and deinitialisation~~ &#10003;
@@ -51,6 +51,8 @@ A terminal-based 2D text animator built on C++
 - ~~Dynamic string reveal animations~~ &#10003;
 - ~~Multi-frame text animations displayed in sequence~~ &#10003;
 - ~~Universal framerate~~ &#10003;
-- Reading and displaying text images from files &#9744;
+- ~~Reading and displaying text images from files~~  &#10003;
+- Scan user config directory for available animations &#9744;
+- Text to JSON animation formatter &#9744;
 - Color text support &#9744;
 - Optimisation &#9744;
