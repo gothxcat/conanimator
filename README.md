@@ -38,6 +38,11 @@ A terminal-based 2D text animator built on C++
     - `make dist`
 
 
+## Development and Contribution
+- See `STRUCTURE` for an outline of the project
+- Code begins at `src/main.cpp`
+
+
 ### Feature Roadmap
 - ~~Functional GNU build structure and Hello World~~ &#10003;
 - ~~Object-oriented ncurses display initialisation and deinitialisation~~ &#10003;
