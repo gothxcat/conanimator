@@ -13,6 +13,7 @@
 
 std::string help_run = gen_help_run();
 
+/* Create argparse instance, prog info and args */
 argparse::ArgumentParser setup(std::string name, std::string version, std::string description) {
     argparse::ArgumentParser program(name, version);
     program.add_description(description);
@@ -28,6 +29,8 @@ argparse::ArgumentParser setup(std::string name, std::string version, std::strin
     return program;
 }
 
+/*  Parse from main args.
+*   Parsers and processors take pointers to argparse instance for safer mutability */
 int parse(argparse::ArgumentParser *program, int argc, char **argv) {
     int ret = EXIT_SUCCESS;
     try {
@@ -41,6 +44,7 @@ int parse(argparse::ArgumentParser *program, int argc, char **argv) {
     return ret;
 }
 
+/* Scan used args and return exit code from called routines */
 int process(argparse::ArgumentParser *program) {
     int ret = EXIT_SUCCESS;
     if (program->is_used("-r")) {
@@ -55,6 +59,7 @@ int process(argparse::ArgumentParser *program) {
 			ret = EXIT_FAILURE;
 		}
     } else if (program->is_used("-f")) {
+        /* Load and run animation from path if available */
         const int success = run_anim(program->get("-f").c_str());
         if (success != EXIT_SUCCESS) {
             std::cout << "File not readable" << std::endl;
@@ -67,6 +72,7 @@ int process(argparse::ArgumentParser *program) {
     return ret;
 }
 
+/* Concatenate each test from the vector into a string */
 std::string gen_help_run() {
     std::stringstream ss;
     ss << "animations:" << std::endl;

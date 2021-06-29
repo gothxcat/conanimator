@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Delete all objects listed in .gitignore.
+# Separate into root-only and global matches
 gitignore=$(cat .gitignore | grep -v "#")
 root_objects=$(echo "$gitignore" | grep "^/" | cut -c 2-)
 any_objects=$(echo "$gitignore" | grep "^[^/]")
@@ -7,6 +9,7 @@ any_objects=$(echo "$gitignore" | grep "^[^/]")
 if [[ -n "$root_objects" ]]; then rm -rf $root_objects; fi
 
 for search in $any_objects; do
+	# Remove wholenames if contained in subdirectory
 	if [[ "$search" == *"/"* ]]; then
 		objects=$(find . -wholename "$search")
 	else

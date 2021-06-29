@@ -1,9 +1,6 @@
 [submodule "lib/argparse"]
 	path = lib/argparse
 	url = git://github.com/p-ranav/argparse
-[submodule "lib/json"]
-	path = lib/json
-	url = git://github.com/nlohmann/json
 [submodule "lib/cjson"]
 	path = lib/cjson
 	url = git://github.com/DaveGamble/cJSON

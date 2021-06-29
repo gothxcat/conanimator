@@ -1,0 +1,44 @@
+Source Languages
+    c++                         ISO stdc++17
+
+GNU Build System
+    Compiler
+        gcc
+    
+    Environment
+        autoconf, automake
+
+Scripts
+    configure                   Build environment initialisation
+    autogen                     Regenerate autoconf and automake scripts
+    autoremove                  Clean all objects found in .gitignore
+
+Build Configuration
+    configure.ac                autoconf —
+                                    Library and compatibility checker for project setup
+    Makefile.am                 automake —
+                                    Makefile generator config for autoconf
+
+Tested Build Environments
+    - Arch Linux x64, kernel 5.12.12
+        - gcc 11.1.0
+        - autoconf 2.71
+        - automake 1.16.3
+        - git 2.32.0
+
+Source Tree
+    ├── lib
+    │   └── */                      External libraries
+    └── src
+        ├── classes
+        │   ├── *.cpp               Classes
+        ├── defs
+        │   ├── *.cpp               Definitions, functions
+        ├── include
+        │   └── *.hpp               Forward declerations and includers of
+        │                               classes and definitions for global access
+        └── main.cpp                Entrypoint
+
+Libraries
+    argparse    by Pranav Srinivas Kumar        ISO stdc++17
+    cJSON       by Dave Gamble                  ANSI c89

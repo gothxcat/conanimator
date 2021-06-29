@@ -9,6 +9,7 @@
 #include <fs.hpp>
 #include <proc.hpp>
 
+/* Instantiate FrameAnimator from loaded anim and start the animator UI */
 int run_anim(const char *path) {
     Animation anim;
     char *data;

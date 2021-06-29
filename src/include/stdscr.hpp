@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <ncurses.h>
 
+/* Initialise ncurses stdscr and set console UI/input props */
 WINDOW *scr_setup() {
     initscr();
 	cbreak();

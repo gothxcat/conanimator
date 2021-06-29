@@ -3,9 +3,12 @@
 */
 
 #include <stdlib.h>
+#include <ncurses.h>
 
 #include <animators.hpp>
 
+/*  Start the animator's thread with a reference to the exit value
+*   and run the ncurses input loop */
 void start(Animator *animator) {
     bool done = false;
     char key;

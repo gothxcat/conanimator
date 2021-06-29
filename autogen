@@ -1,4 +1,5 @@
 #!/bin/sh
 
+# Generate autoconf/automake configure scripts and makefile sources
 autoreconf -vif
 rm -f ./configure\~

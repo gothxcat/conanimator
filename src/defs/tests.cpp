@@ -12,6 +12,7 @@
 #include <animations.hpp>
 #include <fs.hpp>
 
+/* cstr to function pointer map */
 function_map tests = {
     { "frames", (func*)&test_frames },
     { "string", (func*)&test_string }

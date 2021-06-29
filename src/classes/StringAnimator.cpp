@@ -13,11 +13,14 @@
 #include <str.hpp>
 #include <animator.hpp>
 
+/*  Deprecated: see FrameAnimator
+    Basic string reveal example subclass */
 class StringAnimator: public Animator {
     private:
         PortableString p_str;
         useconds_t interval;
         
+        /* Initialise stdscr and properties */
         WINDOW *setup(const char *str, useconds_t interval) {
             WINDOW *ret = scr_setup();
             this->p_str = {str, strlen(str)};
@@ -26,10 +29,12 @@ class StringAnimator: public Animator {
             return ret;
         }
 
+        /* Render loop for thread */
         static void animate_string(PortableString p_str, useconds_t interval, std::timed_mutex *mtx, bool *completed) {
             char current_ch;
             while (!*completed) {
                 clear();
+                /* Print each char with a mutex delay/lock */
                 for (int i=0; i<p_str.len; i++) {
                     if (!*completed) {
                         current_ch = p_str.str[i];

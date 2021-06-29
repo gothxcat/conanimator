@@ -11,6 +11,8 @@
 
 #include <animations.hpp>
 
+/*  Create sstream from each line in ifstream,
+*   asprintf to data arg */
 int read_file(char **data, const char *path) {
     std::ifstream file(path);
     if (file.good()) {
@@ -36,6 +38,7 @@ Animation load_animation(const char *json_string) {
         {}
     };
 
+    /* Parse JSON string and scan for objects: framerate and frame array */
     cJSON *data = cJSON_ParseWithLength(json_string, strlen(json_string));
     cJSON *item_fps = cJSON_GetObjectItem(data, "fps");
     cJSON *item_frames = cJSON_GetObjectItem(data, "frames");
@@ -45,6 +48,7 @@ Animation load_animation(const char *json_string) {
         ret.framerate = fps;
     }
 
+    /* Append each array frame into the vector prop */
     int size = cJSON_GetArraySize(item_frames);
     cJSON *item_frame;
     for (int i=0; i<size; i++) {

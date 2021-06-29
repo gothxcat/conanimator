@@ -1,7 +1,4 @@
 # conanimator
-
-*Codename "Keith"*
-
 A terminal-based 2D text animator built on C++
 
 ## Project Initialisation
@@ -31,20 +28,17 @@ A terminal-based 2D text animator built on C++
 
 
 ## Post-build Installation / Uninstallation
-
 `sudo make install`
 
 `sudo make uninstall`
 
 
 ## Deployment
-
 - Build source tarball
     - `make dist`
 
 
 ### Feature Roadmap
-
 - ~~Functional GNU build structure and Hello World~~ &#10003;
 - ~~Object-oriented ncurses display initialisation and deinitialisation~~ &#10003;
     - ~~Basic input handling~~ &#10003;
