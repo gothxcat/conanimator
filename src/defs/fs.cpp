@@ -4,11 +4,11 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include <cJSON.h>
-#include <cJSON.c>
 #include <fstream>
 #include <sstream>
 
+// Program headers
+#include <JSON.hpp>
 #include <animations.hpp>
 
 /*  Create sstream from each line in ifstream,
@@ -38,7 +38,7 @@ Animation load_animation(const char *json_string) {
         {}
     };
 
-    /* Parse JSON string and scan for objects: framerate and frame array */
+    // Parse JSON string and scan for objects: framerate and frame array 
     cJSON *data = cJSON_ParseWithLength(json_string, strlen(json_string));
     cJSON *item_fps = cJSON_GetObjectItem(data, "fps");
     cJSON *item_frames = cJSON_GetObjectItem(data, "frames");
@@ -48,7 +48,7 @@ Animation load_animation(const char *json_string) {
         ret.framerate = fps;
     }
 
-    /* Append each array frame into the vector prop */
+    // Append each array frame into the vector prop 
     int size = cJSON_GetArraySize(item_frames);
     cJSON *item_frame;
     for (int i=0; i<size; i++) {

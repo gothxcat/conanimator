@@ -1,5 +1,5 @@
 /*
-*   Clock and timing defs
+*   Clock and timing definitions
 */
 
 #ifndef __CLOCK

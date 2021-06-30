@@ -1,5 +1,6 @@
 /*
-*   Animator base class
+*   Animator
+*   Visual animator base class
 */
 
 #include <stdlib.h>
@@ -7,12 +8,13 @@
 #include <thread>
 #include <future>
 
+// Program headers
 #include <stdscr.hpp>
 
-/* Base animator provides virtual framework */
+// Base animator provides virtual framework 
 class Animator {
     protected:
-        /* Internal properties for subclasses */
+        // Internal properties for subclasses 
         std::thread animator;
         std::timed_mutex mtx;
         virtual WINDOW *setup() { return nullptr; };
@@ -21,7 +23,7 @@ class Animator {
         virtual void start(bool *return_signal) {};
 
         void end() {
-            /* Interrupt mutex timers, merge the threads and restore the ncurses screen */
+            // Interrupt mutex timers, merge the threads and restore the ncurses screen 
             this->mtx.unlock();
             this->animator.join();
             scr_end();

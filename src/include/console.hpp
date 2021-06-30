@@ -6,8 +6,10 @@
 #define __CONSOLE
 
 #include <stdlib.h>
-#include <argparse/argparse.hpp>
 #include <string>
+
+// Library headers
+#include <argparse/argparse.hpp>
 
 argparse::ArgumentParser setup(std::string name, std::string version, std::string description);
 int parse(argparse::ArgumentParser program, int argc, char **argv);

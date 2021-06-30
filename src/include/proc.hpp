@@ -5,6 +5,7 @@
 #ifndef __PROC
 #define __PROC
 
+// Program headers
 #include <animator.hpp>
 
 void start(Animator *animator);

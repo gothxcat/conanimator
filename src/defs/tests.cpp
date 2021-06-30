@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <map>
 
+// Program headers
 #include <tests.hpp>
 #include <maths.hpp>
 #include <animations.hpp>
@@ -12,7 +13,7 @@
 #include <animations.hpp>
 #include <fs.hpp>
 
-/* cstr to function pointer map */
+// cstr to function pointer map 
 function_map tests = {
     { "frames", (func*)&test_frames },
     { "string", (func*)&test_string }

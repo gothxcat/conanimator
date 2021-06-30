@@ -268,8 +268,12 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
+
+# Project globals
 codesrc = ./src
 conanimator_SOURCES = $(codesrc)/main.cpp $(codesrc)/* $(libdir)/*
+
+# Compiler flags such as for libraries and includes
 AM_CXXFLAGS = -lncurses -pthread \
 -I$(codesrc)/include \
 -I$(libdir)/argparse/include -I$(libdir)/cjson
@@ -760,6 +764,10 @@ uninstall-am: uninstall-binPROGRAMS
 
 .PRECIOUS: Makefile
 
+
+# install-data-local:
+#     @if test -d $(zsh_comp_destdir); then \
+#         cp $(zsh_comp_script) $(zsh_comp_destdir)/_conanimator
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

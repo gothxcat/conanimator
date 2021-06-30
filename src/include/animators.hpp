@@ -1,5 +1,5 @@
 /*
-*	Animators
+*	Animator classes
 */
 
 #ifndef __ANIMATORS
@@ -7,6 +7,7 @@
 
 #include <stdlib.h>
 
+// Program headers
 #include <animator.hpp>
 
 class StringAnimator;

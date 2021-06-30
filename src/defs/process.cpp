@@ -1,10 +1,11 @@
 /*
-*   ncurses animation process
+*   ncurses animation start process
 */
 
 #include <stdlib.h>
 #include <ncurses.h>
 
+// Program headers
 #include <animators.hpp>
 
 /*  Start the animator's thread with a reference to the exit value

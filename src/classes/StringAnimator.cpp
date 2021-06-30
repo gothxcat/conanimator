@@ -1,5 +1,6 @@
 /*
 *   StringAnimator
+*   String revealer animator class
 */
 
 #include <stdlib.h>
@@ -8,9 +9,10 @@
 #include <thread>
 #include <future>
 
+// Program headers
 #include <clock.hpp>
 #include <stdscr.hpp>
-#include <str.hpp>
+#include <strx.hpp>
 #include <animator.hpp>
 
 /*  Deprecated: see FrameAnimator
@@ -20,7 +22,7 @@ class StringAnimator: public Animator {
         PortableString p_str;
         useconds_t interval;
         
-        /* Initialise stdscr and properties */
+        // Initialise stdscr and properties 
         WINDOW *setup(const char *str, useconds_t interval) {
             WINDOW *ret = scr_setup();
             this->p_str = {str, strlen(str)};
@@ -29,7 +31,7 @@ class StringAnimator: public Animator {
             return ret;
         }
 
-        /* Render loop for thread */
+        // Render loop for thread 
         static void animate_string(PortableString p_str, useconds_t interval, std::timed_mutex *mtx, bool *completed) {
             char current_ch;
             while (!*completed) {

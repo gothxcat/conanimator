@@ -1,10 +1,11 @@
 /*
-*   Maths and conversion defs
+*   Maths and conversion definitions
 */
 
 #include <stdlib.h>
 #include <math.h>
 
+// Program headers
 #include <maths.hpp>
 
 /*  Calculate delay in microseconds to reach target frametime -> stabilise framerate

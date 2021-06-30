@@ -3,12 +3,15 @@
 */
 
 #include <stdlib.h>
+
+// Library headers
 #include <argparse/argparse.hpp>
 
+// Program headers
 #include <console.hpp>
 
 int main(int argc, char **argv) {
-	/* Setup and start argparser */
+	// Setup and start argparser 
 	argparse::ArgumentParser program = setup(
 		"conanimator", "1.0.0", "A terminal-based 2D text/ASCII animator.");
 

@@ -1,5 +1,5 @@
 /*
-*   Animator base include
+*   Animator base class include and definitions
 */
 
 #ifndef __ANIMATOR

@@ -1,9 +1,9 @@
 /*
-*   String tools
+*   String definitions and extensions
 */
 
-#ifndef __STR
-#define __STR
+#ifndef __STR_X
+#define __STR_X
 
 #include <stdlib.h>
 #include <string.h>

@@ -1,5 +1,5 @@
 /*
-*   Animations and frames
+*   Animation objects and frame examples
 */
 
 #ifndef __ANIMATIONS
@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <vector>
 
+// Program headers
 #include <animator.hpp>
 
 struct Animation {
