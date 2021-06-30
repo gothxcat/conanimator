@@ -1,9 +1,16 @@
 # Project globals
 codesrc = ./src
 libdir = ./lib
+completiondir = ./completions
 
-# zsh_comp_destdir = /usr/share/zsh/site-functions
-# zsh_comp_script = completions/conanimator.zsh
+if USEZSH
+USEZSH = 1
+endif
+
+zsh_comp_script = $(completiondir)/conanimator.zsh
+zsh_comp_dir = /usr/share/zsh/site-functions
+zsh_comp_dest = $(zsh_comp_dir)/_conanimator
+zsh_reload = $(completiondir)/reload.zsh
 
 # Program initialisation, entrypoint, libraries and all sources
 bin_PROGRAMS = conanimator
@@ -14,6 +21,14 @@ AM_CXXFLAGS = -lncurses -pthread \
 -I$(codesrc)/include \
 -I$(libdir)/argparse/include -I$(libdir)/cjson
 
-# install-data-local:
-#     @if test -d $(zsh_comp_destdir); then \
-#         cp $(zsh_comp_script) $(zsh_comp_destdir)/_conanimator
+# Rule extensions
+#   https://www.gnu.org/software/automake/manual/html_node/Extending.html
+install-data-hook:
+	mkdir -p $(zsh_comp_dir) && \
+	cp $(zsh_comp_script) $(zsh_comp_dest) && \
+	if [ -z "$(USEZSH)" ]; then \
+		zsh $(zsh_reload); \
+	fi
+
+uninstall-hook:
+	rm -f $(zsh_comp_dest)

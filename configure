@@ -620,6 +620,8 @@ ac_subst_vars='am__EXEEXT_FALSE
 am__EXEEXT_TRUE
 LTLIBOBJS
 LIBOBJS
+USEZSH_FALSE
+USEZSH_TRUE
 am__fastdepCXX_FALSE
 am__fastdepCXX_TRUE
 CXXDEPMODE
@@ -3592,6 +3594,16 @@ fi
 
 # Checks for library functions.
 
+# Checks for environment variables.
+ if test x$(basename $SHELL) = xzsh; then
+  USEZSH_TRUE=
+  USEZSH_FALSE='#'
+else
+  USEZSH_TRUE='#'
+  USEZSH_FALSE=
+fi
+
+
 # Outputs
 ac_config_files="$ac_config_files Makefile"
 
@@ -3763,6 +3775,10 @@ Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${am__fastdepCXX_TRUE}" && test -z "${am__fastdepCXX_FALSE}"; then
   as_fn_error $? "conditional \"am__fastdepCXX\" was never defined.
+Usually this means the macro was only invoked conditionally." "$LINENO" 5
+fi
+if test -z "${USEZSH_TRUE}" && test -z "${USEZSH_FALSE}"; then
+  as_fn_error $? "conditional \"USEZSH\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 

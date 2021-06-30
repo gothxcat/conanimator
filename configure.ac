@@ -18,6 +18,9 @@ AC_PROG_CXX
 
 # Checks for library functions.
 
+# Checks for environment variables.
+AM_CONDITIONAL([USEZSH],[test x$(basename $SHELL) = xzsh])
+
 # Outputs
 AC_CONFIG_FILES([
 	Makefile
