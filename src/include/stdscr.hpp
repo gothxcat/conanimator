@@ -13,6 +13,8 @@ WINDOW *scr_setup() {
     initscr();
 	cbreak();
 	noecho();
+	nonl();
+	curs_set(0);
 	intrflush(stdscr, true);
 	keypad(stdscr, true);
 	return stdscr;

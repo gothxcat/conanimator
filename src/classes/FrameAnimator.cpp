@@ -68,7 +68,9 @@ class FrameAnimator: public Animator {
         // Renderer loop to run on thread 
         static void animate_frames(std::vector<const char*> frames, unsigned int target_framerate,
                 std::timed_mutex *mtx, bool *completed) {
-            const char *current_frame;
+            char *current_frame;
+            char *segment;
+            int segment_index;
             
             /*  Get display limits 
                 Todo: interrupt on resize */
@@ -102,30 +104,44 @@ class FrameAnimator: public Animator {
 
             while (!*completed) {
                 for (int i=0; i<frame_count; i++) {
-                    // Interrupt if the boolean at the reference is completed 
+                    // Interrupt if the boolean at the reference is completed
                     if (!*completed) {
-                        // Get times to compare and calculate duration for frametimes 
+                        // Get times to compare and calculate duration for frametimes
                         previous_time = hres_clock::now();
 
-                        // Print frame at stdscr start 
-                        current_frame = frames[i];
-                        mvaddstr(0, 0, current_frame);
+                        // Allocate new frame copy to scan
+                        current_frame = (char*)malloc(strlen(frames[i]) * SIZE_CHAR);
+                        strcpy(current_frame, frames[i]);
+
+                        // Process lines to split for each row and print frame at stdscr start
+                        segment = strtok(current_frame, "\n");
+                        if (segment != NULL) {
+                            segment_index = 0;
+                            while (segment != NULL) {
+                                mvaddstr(segment_index, 0, segment);
+                                segment = strtok(NULL, "\n");
+                                segment_index++;
+                            }
+                        } else {
+                            mvaddstr(0, 0, current_frame);
+                        }
+                        
                         refresh();
 
                         time = hres_clock::now();
                         time_span = std::chrono::duration_cast<std::chrono::seconds>(time - previous_time);
-                        frametime = time_span.count(); // (s) 
+                        frametime = time_span.count(); // (s)
 
-                        // Sleep thread via mutex 
+                        // Sleep thread via mutex
                         delay = get_delay(frametime, target_frametime);
                         if (delay > 0) mtx->try_lock_for(std::chrono::microseconds(delay));
 
-                        // Calculate frametime from duration 
+                        // Calculate frametime from duration
                         time = hres_clock::now();
                         time_span = std::chrono::duration_cast<duration_d>(time - previous_time);
                         frametime = time_span.count();
                         
-                        // Print the debug string to the bottom of the screen 
+                        // Print the debug string to the bottom of the screen
                         asprintf_debug({&msg, &msg_frametime, &msg_framerate, &str_spacer,
                             i, frame_count, frametime, framerate, max_xy});
                         mvaddstr(last_xy.y, 0, msg);

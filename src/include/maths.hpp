@@ -16,6 +16,9 @@
 #define FRAMERATE(frametime)        (1/(frametime))
 #define FRAMETIME(framerate)        (round(1/(framerate)))
 
+// Storage sizes
+#define SIZE_CHAR                   sizeof(char)
+
 struct Point {
     int x,y;
 };
