@@ -72,3 +72,6 @@ Versions last updated 2nd August 2021.
     
     argparse    by Pranav Srinivas Kumar    ISO stdc++17    Tested commit 64dd67c
     cJSON       by Dave Gamble              ANSI C89        Tested commit 324a6ac
+
+
+For more documentation, see the `docs` directory.

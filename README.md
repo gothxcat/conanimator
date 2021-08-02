@@ -39,8 +39,8 @@ A terminal-based 2D text animator built on C++
 
 
 ## Development and Contribution
-- See `STRUCTURE` for an outline of the project
-- Code begins at `src/main.cpp`
+- See `docs/STRUCTURE` for an outline of the project
+- Execution starts at `src/main.cpp`
 
 
 ### Feature Roadmap

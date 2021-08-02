@@ -1,0 +1,8 @@
+** Development Environment Integration **
+
+    IDE                 Shortcut                            Action
+    _______________________________________________________________________________
+
+    code-oss (vscode)   workbench.action.debug.start        Debug with GDB
+    -                   workbench.action.tasks.build        Build executable
+    -                   workbench.action.tasks.test         Run executable
