@@ -1,6 +1,5 @@
 /*
-*   Animator
-*   Visual animator base class
+*   Visual animator base classes
 */
 
 #include <cstdlib>
