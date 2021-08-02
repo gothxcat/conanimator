@@ -8,7 +8,7 @@
 #include <sstream>
 
 // Program headers
-#include <JSON.hpp>
+#include <fs.hpp>
 #include <animator.hpp>
 
 /*  Create sstream from each line in ifstream,

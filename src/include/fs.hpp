@@ -5,6 +5,10 @@
 #ifndef __FS
 #define __FS
 
+// Library headers
+#include <cJSON.h>
+#include <cJSON.c>
+
 // Program headers
 #include <animator.hpp>
 
