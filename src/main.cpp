@@ -2,13 +2,13 @@
 *	Program entrypoint
 */
 
-#include <stdlib.h>
+#include <cstdlib>
 
 // Library headers
 #include <argparse/argparse.hpp>
 
 // Program headers
-#include <console.hpp>
+#include <parser.hpp>
 
 int main(int argc, char **argv) {
 	// Setup and start argparser 

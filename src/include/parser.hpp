@@ -1,11 +1,11 @@
 /*
-*   Console and arguments header
+*   Console and argument parsing
 */
 
 #ifndef __CONSOLE
 #define __CONSOLE
 
-#include <stdlib.h>
+#include <cstdlib>
 #include <string>
 
 // Library headers
@@ -16,6 +16,6 @@ int parse(argparse::ArgumentParser program, int argc, char **argv);
 int process(argparse::ArgumentParser program);
 std::string gen_help_run();
 
-#include "../defs/console.cpp"
+#include "../parser.cpp"
 
 #endif

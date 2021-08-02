@@ -6,11 +6,11 @@
 #define __FS
 
 // Program headers
-#include <animations.hpp>
+#include <animator.hpp>
 
 int read_file(char **data, const char *path);
 Animation load_animation(const char *json_string);
 
-#include "../defs/fs.cpp"
+#include "../fs.cpp"
 
 #endif

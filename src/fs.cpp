@@ -2,14 +2,14 @@
 *   Filesystem and data parsing
 */
 
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 #include <fstream>
 #include <sstream>
 
 // Program headers
 #include <JSON.hpp>
-#include <animations.hpp>
+#include <animator.hpp>
 
 /*  Create sstream from each line in ifstream,
 *   asprintf to data arg */

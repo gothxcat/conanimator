@@ -1,22 +1,21 @@
 /*
-*   Program test definitions
+*   Built-in animation functions
 */
 
-#include <stdlib.h>
+#include <cstdlib>
 #include <map>
 
 // Program headers
-#include <tests.hpp>
+#include <examples.hpp>
 #include <maths.hpp>
-#include <animations.hpp>
-#include <proc.hpp>
-#include <animations.hpp>
+#include <animator.hpp>
+#include <loader.hpp>
 #include <fs.hpp>
 
-// cstr to function pointer map 
-function_map tests = {
-    { "frames", (func*)&test_frames },
-    { "string", (func*)&test_string }
+// string to function pointer map 
+map_str_func tests = {
+    { "frames", &test_frames },
+    { "string", &test_string }
 };
 
 void test_frames() {

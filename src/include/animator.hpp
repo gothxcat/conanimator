@@ -1,18 +1,25 @@
 /*
-*   Animator base class include and definitions
+*   Animator classes and definitions
 */
 
 #ifndef __ANIMATOR
 #define __ANIMATOR
 
-#include <stdlib.h>
-#include <ncurses.h>
+#include <cstdlib>
+#include <curses.h>
 #include <thread>
 
 #define DEFAULT_FPS 60
 
 class Animator;
+class StringAnimator;
+class FrameAnimator;
 
-#include "../classes/Animator.cpp"
+struct Animation {
+    unsigned int framerate;
+    std::vector<const char*> frames;
+};
+
+#include "../animator.cpp"
 
 #endif

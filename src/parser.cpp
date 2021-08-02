@@ -2,7 +2,7 @@
 *   Console and argument handlers
 */
 
-#include <stdlib.h>
+#include <cstdlib>
 #include <string>
 #include <iostream>
 #include <sstream>
@@ -11,7 +11,7 @@
 #include <argparse/argparse.hpp>
 
 // Program headers
-#include <tests.hpp>
+#include <examples.hpp>
 #include <loader.hpp>
 
 std::string help_run = gen_help_run();
@@ -52,7 +52,7 @@ int process(argparse::ArgumentParser *program) {
     int ret = EXIT_SUCCESS;
     if (program->is_used("-r")) {
         auto test = program->get<std::string>("-r");
-        function_map::iterator match = tests.find(test);
+        map_str_func::iterator match = tests.find(test);
 		if (match != tests.end()) {
 			tests[test]();
 		} else if (test == "help") {

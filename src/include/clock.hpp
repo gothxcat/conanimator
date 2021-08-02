@@ -5,7 +5,7 @@
 #ifndef __CLOCK
 #define __CLOCK
 
-#include <stdlib.h>
+#include <cstdlib>
 #include <chrono>
 
 typedef std::chrono::high_resolution_clock hres_clock;

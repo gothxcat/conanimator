@@ -5,8 +5,8 @@
 #ifndef __SCR
 #define __SCR
 
-#include <stdlib.h>
-#include <ncurses.h>
+#include <cstdlib>
+#include <curses.h>
 
 /* Initialise ncurses stdscr and set console UI/input props */
 WINDOW *scr_setup() {

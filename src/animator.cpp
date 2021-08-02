@@ -1,32 +1,59 @@
 /*
-*   FrameAnimator
-*   Frame-by-frame animator class
+*   Animator
+*   Visual animator base class
 */
 
-#include <stdlib.h>
-#include <ncurses.h>
-#include <string.h>
+#include <cstdlib>
+#include <curses.h>
+#include <unistd.h>
+#include <cstring>
 #include <vector>
 #include <thread>
 #include <future>
 #include <string>
 
 // Program headers
-#include <clock.hpp>
 #include <animator.hpp>
+#include <clock.hpp>
 #include <maths.hpp>
-#include <animations.hpp>
+#include <stdscr.hpp>
+
+// Base animator provides virtual framework 
+class Animator {
+    protected:
+        // Internal properties for subclasses 
+        std::thread animator;
+        std::timed_mutex mtx;
+        virtual WINDOW *setup() { return nullptr; };
+
+    public:
+        virtual void start(bool *return_signal) {};
+        virtual void update() {};
+
+        void end() {
+            // Interrupt mutex timers, merge the threads and restore the ncurses screen 
+            this->mtx.unlock();
+            this->animator.join();
+            scr_end();
+        }
+
+        Animator() {};
+};
 
 struct FrameDebug {
-    // Debug properties and pointers 
+    /* Debug properties and pointers */
+
+    // Must be accessible by FrameAnimator::asprintf_debug
     char **msg;
     char **msg_frametime;
     char **msg_framerate;
     std::string *spacer;
-    int current_frame;
+    int *framerate;
+    
+    // Must be set
+    int human_index;
     int frame_count;
     double frametime;
-    int framerate;
     Point max_xy;
 };
 
@@ -35,6 +62,7 @@ class FrameAnimator: public Animator {
     private:
         std::vector<const char*> frames;
         unsigned int target_framerate;
+        Point max_xy;
         
         // Initialise stdscr and animation props 
         WINDOW *setup(std::vector<const char *> frames, unsigned int target_framerate) {
@@ -50,15 +78,20 @@ class FrameAnimator: public Animator {
         static int asprintf_debug(FrameDebug info) {
             // Write debug string to memory reference 
             asprintf(info.msg_frametime, "Frame %02d/%02d took %fs",
-                info.current_frame, info.frame_count, info.frametime);
+                info.human_index, info.frame_count, info.frametime);
 
-            info.framerate = FRAMERATE(info.frametime);
-            asprintf(info.msg_framerate, "%d fps", info.framerate);
+            *info.framerate = FRAMERATE(info.frametime);
+            asprintf(info.msg_framerate, "%d fps", *info.framerate);
             
             // Concatenate padding space to align debug to left and right 
             int space = info.max_xy.x - (strlen(*info.msg_frametime) + strlen(*info.msg_framerate));
-            info.spacer->assign(space, ' ');
-            const char *msg_spacer = info.spacer->c_str();
+            const char *msg_spacer;
+            if (space > 0) {
+                info.spacer->assign(space, ' ');
+                msg_spacer = info.spacer->c_str();
+            } else {
+                msg_spacer = "";
+            }
 
             // Write final message 
             return asprintf(info.msg, "%s%s%s",
@@ -67,22 +100,11 @@ class FrameAnimator: public Animator {
 
         // Renderer loop to run on thread 
         static void animate_frames(std::vector<const char*> frames, unsigned int target_framerate,
+                Point *max_xy,
                 std::timed_mutex *mtx, bool *completed) {
             char *current_frame;
             char *segment;
             int segment_index;
-            
-            /*  Get display limits 
-                Todo: interrupt on resize */
-            Point max_xy = {
-                getmaxx(stdscr),
-                getmaxy(stdscr)
-            };
-
-            Point last_xy = {
-                max_xy.x-1,
-                max_xy.y-1
-            };
 
             int frame_count = frames.size();
             
@@ -102,6 +124,8 @@ class FrameAnimator: public Animator {
             char *msg_frametime, *msg_framerate, *msg;
             std::string str_spacer;
 
+            // Ensure clean stdscr buffer before render loop
+            refresh();
             while (!*completed) {
                 for (int i=0; i<frame_count; i++) {
                     // Interrupt if the boolean at the reference is completed
@@ -125,8 +149,6 @@ class FrameAnimator: public Animator {
                         } else {
                             mvaddstr(0, 0, current_frame);
                         }
-                        
-                        refresh();
 
                         time = hres_clock::now();
                         time_span = std::chrono::duration_cast<std::chrono::seconds>(time - previous_time);
@@ -143,8 +165,11 @@ class FrameAnimator: public Animator {
                         
                         // Print the debug string to the bottom of the screen
                         asprintf_debug({&msg, &msg_frametime, &msg_framerate, &str_spacer,
-                            i, frame_count, frametime, framerate, max_xy});
-                        mvaddstr(last_xy.y, 0, msg);
+                            &framerate, i+1, frame_count, frametime, *max_xy});
+                        mvaddstr(max_xy->y-1, 0, msg);
+
+                        // Update the screen every frame
+                        refresh();
                     }
                 }
             }
@@ -158,12 +183,75 @@ class FrameAnimator: public Animator {
         // Start the animation thread 
         void start(bool *return_signal) {
             this->animator = std::thread(animate_frames,
-                this->frames, this->target_framerate, &this->mtx, return_signal);
+                this->frames,
+                this->target_framerate,
+                &this->max_xy,
+                &this->mtx,
+                return_signal);
+        }
+
+        void update() {
+            this->max_xy = {
+                getmaxx(stdscr),
+                getmaxy(stdscr)
+            };
+
+            clear();
         }
 
         FrameAnimator(Animation animation) {
             this->setup(animation.frames, animation.framerate);
+            this->update();
         }
 
         FrameAnimator();
+};
+
+struct PortableString {
+    const char *str;
+    size_t len;
+};
+
+/*  Deprecated: see FrameAnimator
+    Basic string reveal example subclass */
+class StringAnimator: public Animator {
+    private:
+        PortableString p_str;
+        useconds_t interval;
+        
+        // Initialise stdscr and properties 
+        WINDOW *setup(const char *str, useconds_t interval) {
+            WINDOW *ret = scr_setup();
+            this->p_str = {str, strlen(str)};
+            this->interval = interval;
+
+            return ret;
+        }
+
+        // Render loop for thread 
+        static void animate_string(PortableString p_str, useconds_t interval, std::timed_mutex *mtx, bool *completed) {
+            char current_ch;
+            while (!*completed) {
+                clear();
+                /* Print each char with a mutex delay/lock */
+                for (int i=0; i<p_str.len; i++) {
+                    if (!*completed) {
+                        current_ch = p_str.str[i];
+                        addch(current_ch);
+                        refresh();
+                        mtx->try_lock_for(std::chrono::microseconds(interval));
+                    }
+                }
+            }
+        }
+    public:
+        void start(bool *return_signal) {
+            this->animator = std::thread(animate_string, this->p_str, this->interval, &this->mtx, return_signal);
+        }
+
+        StringAnimator(const char *str, useconds_t interval) {
+            this->setup(str, interval);
+        }
+
+        StringAnimator();
 };
